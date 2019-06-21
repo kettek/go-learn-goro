@@ -3,14 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <title>{{.Title}} - Learn It</title>
+        <link rel="stylesheet" href="/static/lesson.css">
+        <link rel="stylesheet" href="/static/goingrogue.css">
+        <link href="https://fonts.googleapis.com/css?family=Istok+Web|Open+Sans&display=swap" rel="stylesheet">
     </head>
     <body>
         <section id="Menu">
             <section id="Title">
-                Learn It
+              {{.Name}}
             </section>
-            <button id="ReportBug">Report a Bug</button>
-            <section id="TableOfContents"></section>
+            <section id="Info">
+                <a class="menu button" id="ReportBug" href="//github.com/kettek/go-learn-goro/issues/new" title="Report a Bug">🐞</a>
+                <a class="menu button" id="TableOfContents" href="/list">☰</a>
+                <section id="TableOfContents"></section>
+            </section>
         </section>
         <section id="Container">
             <h1>Welcome to the curriculum</h1>
@@ -20,9 +26,11 @@
                 <section class="Course">
                     <header>{{$course.Name}}</header>
                     <p class="Content">{{$course.Description}}</p>
+                    <ul>
                     {{range $i, $lesson := .Lessons}}
-                        <a href="/{{$course.Shortname}}/{{inc $i}}">{{$lesson.Title}}</a>
+                    <li><a href="/{{$course.Shortname}}/{{inc $i}}">{{$lesson.Title}}</a></li>
                     {{end}}
+                    </ul>
                 </section>
             {{end}}
         </section>

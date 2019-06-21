@@ -61,3 +61,23 @@ h1, h2, h3, h4, h5, h6, #Title {
   background: #151515;
   color: #e0e0e0;
 }
+
+/* */
+.Course header {
+  font-family: 'Istok Web', sans-serif;
+  line-height: 1;
+  font-weight: bold;
+  font-size: 125%;
+  margin-top: .5em;
+}
+
+.Course p {
+  padding-left: 1em;
+}
+
+#Container {
+  padding: 1em;
+  background: var(--lesson-background);
+  color: var(--lesson-color);
+  border-radius: 3px;
+}
