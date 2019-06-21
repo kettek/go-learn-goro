@@ -1,0 +1,10 @@
+{
+    "Name": "A Go Roguelike Tutorial",
+    "Description": "This series of tutorials will walk you through creating a roguelike in Go using the GoingRogue library. It is styled after The TCOD tutorial at http://rogueliketutorials.com/tutorials/tcod/",
+    "Language": "go",
+    "LanguageExtension": "go",
+    "Courses": [
+        "part-0",
+        "part-1"
+    ]
+}

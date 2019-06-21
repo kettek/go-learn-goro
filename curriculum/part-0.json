@@ -1,0 +1,12 @@
+{
+  "Name": "Part 0: Setting Up",
+  "Description": "This tutorial assumes some basic familiarity with the go programming language, although it is not strictly required. A good resource for the basics of Go is available at https://tour.golang.org/welcome/1",
+  "Language": "go",
+  "LanguageExtension": "go",
+  "Lessons": [
+    "Installing Go",
+    "Editors",
+    "Testing Go",
+    "How the Tutorials Work"
+  ]
+}

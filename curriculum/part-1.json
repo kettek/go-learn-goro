@@ -1,0 +1,14 @@
+{
+  "Name": "Part 1: To See and Move an '@'",
+  "Description": "This part of the tutorial introduces the GoingRogue library and using it to draw an '@' symbol and move it around the screen.",
+  "Language": "go",
+  "LanguageExtension": "go",
+  "Lessons": [
+    "Initializing Going Rogue",
+    "Running our Game Loop",
+    "Drawing the Player",
+    "Defining Actions",
+    "Converting Events to Actions",
+    "Moving the Player with Actions"
+  ]
+}
