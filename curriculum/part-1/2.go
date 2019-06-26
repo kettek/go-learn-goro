@@ -14,7 +14,9 @@ func main() {
 	goro.Run(func(screen *goro.Screen) {
 		// Screen configuration.
 		screen.SetTitle("My Roguelike")
+		screen.SetSize(80, 24)
 
+		// The game loop.
 		for {
 			// Draw screen.
 			screen.DrawString(0, 0, "Press any key to Quit.", goro.Style{})
