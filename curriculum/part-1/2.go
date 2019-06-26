@@ -19,7 +19,7 @@ func main() {
 		// The game loop.
 		for {
 			// Draw screen.
-			screen.DrawString(0, 0, "Press any key to Quit.", goro.Style{})
+			screen.DrawString(0, 2, "Press any key to Quit.", goro.Style{})
 			screen.Flush()
 
 			// Handle events.
