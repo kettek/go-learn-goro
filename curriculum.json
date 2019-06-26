@@ -5,6 +5,7 @@
     "LanguageExtension": "go",
     "Courses": [
         "part-0",
-        "part-1"
+        "part-1",
+        "part-2"
     ]
 }

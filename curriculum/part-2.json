@@ -1,0 +1,16 @@
+{
+  "Name": "Part 2: Entities, rendering, and the map",
+  "Description": "This part of the tutorial focuses on a generic Entity type, the concept of a game map, and additional rendering functions.",
+  "Language": "go",
+  "LanguageExtension": "go",
+  "Lessons": [
+    "The Generic Entity",
+    "Using the Entity",
+    "Implementing Rendering",
+    "Multiple Entities and Rendering",
+    "The Tile",
+    "The GameMap",
+    "Using our GameMap",
+    "Rendering with the GameMap"
+  ]
+}
