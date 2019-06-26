@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"myproject/entity"
+	"myproject/mapping"
 )
 
 func main() {
@@ -18,6 +19,20 @@ func main() {
 		screen.SetTitle("My Roguelike")
 
 		// Our initial variables.
+		mapWidth, mapHeight := 80, 24
+
+		colors := map[string]goro.Color{
+			"darkWall":   goro.Color{R: 0, G: 0, B: 100, A: 255},
+			"darkGround": goro.Color{R: 50, G: 50, B: 150, A: 255},
+		}
+
+		gameMap := mapping.GameMap{
+			Width:  mapWidth,
+			Height: mapHeight,
+		}
+
+		gameMap.Initialize()
+
 		player := entity.NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
 		npc := entity.NewEntity(screen.Columns/2-5, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorYellow})
 
@@ -28,7 +43,7 @@ func main() {
 
 		for {
 			// Draw screen.
-			DrawAll(screen, entities)
+			DrawAll(screen, entities, gameMap, colors)
 			ClearAll(screen, entities)
 
 			// Handle events.
@@ -36,7 +51,9 @@ func main() {
 			case goro.EventKey:
 				switch action := handleKeyEvent(event).(type) {
 				case ActionMove:
-					player.Move(action.X, action.Y)
+					if !gameMap.IsBlocked(player.X+action.X, player.Y+action.Y) {
+						player.Move(action.X, action.Y)
+					}
 				case ActionQuit:
 					goro.Quit()
 				}

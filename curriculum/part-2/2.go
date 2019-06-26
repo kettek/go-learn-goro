@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/kettek/goro"
 	"log"
+
+	"myproject/entity"
 )
 
 func main() {
@@ -16,7 +18,7 @@ func main() {
 		screen.SetTitle("My Roguelike")
 
 		// Our initial variables.
-		player := NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
+		player := entity.NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
 
 		for {
 			// Draw screen.
