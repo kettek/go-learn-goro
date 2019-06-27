@@ -4,10 +4,22 @@ import (
 	"github.com/kettek/goro"
 
 	"myproject/entity"
+	"myproject/mapping"
 )
 
-// DrawAll draws all entities to the screen and flushes it.
-func DrawAll(screen *goro.Screen, entities []*entity.Entity) {
+// DrawAll draws all entities and the gameMap to the screen and flushes it.
+func DrawAll(screen *goro.Screen, entities []*entity.Entity, gameMap mapping.GameMap, colors map[string]goro.Color) {
+	// Draw all the tiles within the game map.
+	for x, column := range gameMap.Tiles {
+		for y, tile := range column {
+			if tile.BlockSight {
+				screen.SetBackground(x, y, colors["darkWall"])
+			} else {
+				screen.SetBackground(x, y, colors["darkGround"])
+			}
+		}
+	}
+	// Draw all the entities.
 	for _, entity := range entities {
 		DrawEntity(screen, entity)
 	}
