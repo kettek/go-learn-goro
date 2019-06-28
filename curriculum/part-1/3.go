@@ -14,6 +14,7 @@ func main() {
 	goro.Run(func(screen *goro.Screen) {
 		// Screen configuration.
 		screen.SetTitle("My Roguelike")
+		screen.SetSize(80, 24)
 
 		// Our initial variables.
 		playerX, playerY := screen.Columns/2, screen.Rows/2
