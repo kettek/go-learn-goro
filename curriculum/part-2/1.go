@@ -13,8 +13,8 @@ type Entity struct {
 
 // Move moves the entity by a given amount.
 func (e *Entity) Move(x, y int) {
-	b.X += x
-	b.Y += y
+	e.X += x
+	e.Y += y
 }
 
 // NewEntity returns a pointer to a newly created Entity.
