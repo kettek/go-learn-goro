@@ -30,5 +30,9 @@ func (g *GameMap) Initialize() {
 
 // IsBlocked returns if the given coordinates are blocking movement.
 func (g *GameMap) IsBlocked(x, y int) bool {
+  // Always block if outside our GameMap's bounds.
+  if x < 0 || x >= g.Width || y < 0 || y >= g.Height {
+    return true
+  }
 	return g.Tiles[x][y].BlockMovement
 }
