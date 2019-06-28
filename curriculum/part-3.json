@@ -1,0 +1,15 @@
+{
+  "Name": "Part 3: Generating a Dungeon",
+  "Description": "This part of the tutorial covers creating a simple procedurally generated dungeon.",
+  "Language": "go",
+  "LanguageExtension": "go",
+  "Lessons": [
+    "Setting Up for Digging",
+    "Mapping: Rect",
+    "From Rect to Room",
+    "Adjusting Main",
+    "Tunneling",
+    "Multiple Rooms & Random Generation!",
+    "Adjusting Main for Great Justice"
+  ]
+}
