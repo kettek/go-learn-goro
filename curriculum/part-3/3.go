@@ -34,7 +34,9 @@ func (g *GameMap) MakeMap() {
 func (g *GameMap) CreateRoom(r *Rect) {
 	for x := r.X1 + 1; x < r.X2; x++ {
 		for y := r.Y1 + 1; y < r.Y2; y++ {
-			g.Tiles[x][y] = Tile{}
+			if g.InBounds(x, y) {
+				g.Tiles[x][y] = Tile{}
+			}
 		}
 	}
 }
@@ -42,8 +44,16 @@ func (g *GameMap) CreateRoom(r *Rect) {
 // IsBlocked returns if the given coordinates are blocking movement.
 func (g *GameMap) IsBlocked(x, y int) bool {
 	// Always block if outside our GameMap's bounds.
-	if x < 0 || x >= g.Width || y < 0 || y >= g.Height {
+	if !g.InBounds(x, y) {
 		return true
 	}
 	return g.Tiles[x][y].BlockMovement
+}
+
+// InBounds returns if the given coordinates are within the map's bounds.
+func (g *GameMap) InBounds(x, y int) bool {
+	if x < 0 || x >= g.Width || y < 0 || y >= g.Height {
+		return false
+	}
+	return true
 }

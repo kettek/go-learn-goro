@@ -74,7 +74,9 @@ func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, player *entity
 func (g *GameMap) CreateRoom(r *Rect) {
 	for x := r.X1 + 1; x < r.X2; x++ {
 		for y := r.Y1 + 1; y < r.Y2; y++ {
-			g.Tiles[x][y] = Tile{}
+			if g.InBounds(x, y) {
+				g.Tiles[x][y] = Tile{}
+			}
 		}
 	}
 }
@@ -82,21 +84,34 @@ func (g *GameMap) CreateRoom(r *Rect) {
 // CreateHTunnel creates a horizontal tunnel from x1 to/from x1 starting at y.
 func (g *GameMap) CreateHTunnel(x1, x2, y int) {
 	for x := goro.MinInt(x1, x2); x <= goro.MaxInt(x1, x2); x++ {
-		g.Tiles[x][y] = Tile{}
+		if g.InBounds(x, y) {
+			g.Tiles[x][y] = Tile{}
+		}
 	}
 }
 
 // CreateVTunnel creates a vertical tunnel from y1 to/from y2 starting at x.
 func (g *GameMap) CreateVTunnel(y1, y2, x int) {
 	for y := goro.MinInt(y1, y2); y <= goro.MaxInt(y1, y2); y++ {
-		g.Tiles[x][y] = Tile{}
+		if g.InBounds(x, y) {
+			g.Tiles[x][y] = Tile{}
+		}
 	}
 }
 
 // IsBlocked returns if the given coordinates are blocking movement.
 func (g *GameMap) IsBlocked(x, y int) bool {
 	// Always block if outside our GameMap's bounds.
-	if x < 0 || x >= g.Width || y < 0 || y >= g.Height {
+	if !g.InBounds(x, y) {
 		return true
 	}
+	return g.Tiles[x][y].BlockMovement
+}
+
+// InBounds returns if the given coordinates are within the map's bounds.
+func (g *GameMap) InBounds(x, y int) bool {
+	if x < 0 || x >= g.Width || y < 0 || y >= g.Height {
+		return false
+	}
+	return true
 }
