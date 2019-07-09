@@ -1,0 +1,14 @@
+{
+  "Name": "Part 4: The Field of View",
+  "Description": "This part of the tutorial covers using a field of view to explore the dungeon.",
+  "Language": "go",
+  "LanguageExtension": "go",
+  "Lessons": [
+    "Implementing our FoV Functions",
+    "Adjusting Rendering",
+    "Using the FoV in main",
+    "Adding Explored to Tiles",
+    "Adjusting GameMap for Exploration",
+    "Rendering with Fog of War"
+  ]
+}
