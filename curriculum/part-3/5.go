@@ -1,5 +1,9 @@
 package mapping
 
+import (
+	"github.com/kettek/goro"
+)
+
 // GameMap is our map data type.
 type GameMap struct {
 	Width, Height int
