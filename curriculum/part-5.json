@@ -1,0 +1,10 @@
+{
+  "Name": "Part 5: Placing Enemies and Interacting with Them",
+  "Description": "This part of the tutorial covers generating enemies and very minorly interacting with them.",
+  "Language": "go",
+  "LanguageExtension": "go",
+  "Lessons": [
+    "Creating Entity Flags",
+    "Checking for Blocking Entities"
+  ]
+}
