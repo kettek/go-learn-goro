@@ -36,13 +36,6 @@ func main() {
 			"lightGround": goro.Color{R: 150, G: 150, B: 150, A: 255},
 		}
 
-		gameMap := mapping.GameMap{
-			Width:  mapWidth,
-			Height: mapHeight,
-		}
-
-		gameMap.Initialize()
-
 		player := entity.NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
 		npc := entity.NewEntity(screen.Columns/2-5, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorYellow})
 
@@ -50,6 +43,13 @@ func main() {
 			player,
 			npc,
 		}
+
+		gameMap := mapping.GameMap{
+			Width:  mapWidth,
+			Height: mapHeight,
+		}
+
+		gameMap.Initialize()
 
 		gameMap.MakeMap(maxRooms, roomMinSize, roomMaxSize, player)
 
