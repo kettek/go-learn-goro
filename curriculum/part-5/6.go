@@ -12,7 +12,8 @@ import (
 
 func main() {
 	// Initialize goro!
-	if err := goro.InitTCell(); err != nil {
+	if err := goro.InitEbiten(); err != nil {
+		//if err := goro.InitTCell(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -27,9 +28,9 @@ func main() {
 		mapWidth, mapHeight := screen.Size()
 		maxRooms, roomMinSize, roomMaxSize := 30, 6, 10
 		maxMonstersPerRoom := 3
+		gameState := PlayerTurnState
 
 		fovRadius := 10
-		fovRecompute := true
 
 		colors := map[string]goro.Color{
 			"darkWall":    goro.Color{R: 25, G: 25, B: 25, A: 255},
@@ -48,10 +49,10 @@ func main() {
 			Width:  mapWidth,
 			Height: mapHeight,
 		}
-
 		gameMap.Initialize()
-
 		gameMap.MakeMap(maxRooms, roomMinSize, roomMaxSize, &entities, maxMonstersPerRoom)
+
+		fovRecompute := true
 
 		fovMap := InitializeFoV(&gameMap)
 
@@ -72,16 +73,19 @@ func main() {
 			case goro.EventKey:
 				switch action := handleKeyEvent(event).(type) {
 				case ActionMove:
-					x := player.X + action.X
-					y := player.Y + action.Y
-					if !gameMap.IsBlocked(x, y) {
-						otherEntity := entity.FindEntityAtLocation(entities, x, y, entity.BlockMovement, entity.BlockMovement)
-						if otherEntity != nil {
-							fmt.Printf("You lick the %s in the shins, much to its enjoyment!\n", otherEntity.Name)
-						} else {
-							player.Move(action.X, action.Y)
-							fovRecompute = true
+					if gameState == PlayerTurnState {
+						x := player.X + action.X
+						y := player.Y + action.Y
+						if !gameMap.IsBlocked(x, y) {
+							otherEntity := entity.FindEntityAtLocation(entities, x, y, entity.BlockMovement, entity.BlockMovement)
+							if otherEntity != nil {
+								fmt.Printf("You lick the %s in the shins, much to its enjoyment!\n", otherEntity.Name)
+							} else {
+								player.Move(action.X, action.Y)
+								fovRecompute = true
+							}
 						}
+						gameState = NPCTurnState
 					}
 				case ActionQuit:
 					goro.Quit()
@@ -89,6 +93,17 @@ func main() {
 			case goro.EventQuit:
 				return
 			}
+
+			// Handle entity updates.
+			if gameState == NPCTurnState {
+				for i, e := range entities {
+					if i > 0 {
+						fmt.Printf("The %s punders.\n", e.Name)
+					}
+				}
+				gameState = PlayerTurnState
+			}
+
 		}
 	})
 }

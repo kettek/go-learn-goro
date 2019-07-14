@@ -2,7 +2,7 @@ package mapping
 
 import (
 	"github.com/kettek/goro"
-	"github.com/kettek/goro-game/entity"
+	"myproject/entity"
 )
 
 // GameMap is our map type for holding our tiles and dimensions.

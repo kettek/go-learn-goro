@@ -7,6 +7,8 @@
     "Creating Entity Flags",
     "Checking for Blocking Entities",
     "Implementing Entity Generation",
-    "Modifying main (yet again)"
+    "Modifying main (yet again)",
+    "Game State",
+    "Taking Turns"
   ]
 }
