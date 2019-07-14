@@ -5,6 +5,8 @@
   "LanguageExtension": "go",
   "Lessons": [
     "Creating Entity Flags",
-    "Checking for Blocking Entities"
+    "Checking for Blocking Entities",
+    "Implementing Entity Generation",
+    "Modifying main (yet again)"
   ]
 }
