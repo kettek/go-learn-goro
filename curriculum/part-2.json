@@ -4,7 +4,8 @@
   "Language": "go",
   "LanguageExtension": "go",
   "Lessons": [
-    "The Generic Entity",
+    "The Entity Interface",
+    "The Entity Type",
     "Using the Entity",
     "Implementing Rendering",
     "Multiple Entities and Rendering",
@@ -13,4 +14,4 @@
     "Using our GameMap",
     "Rendering with the GameMap"
   ]
-}
+

@@ -1,43 +1,70 @@
-package main
+package entity
 
 import (
-	"github.com/kettek/goro"
-	"log"
+	"myproject/interfaces"
 
-	"myproject/entity"
+	"github.com/kettek/goro"
 )
 
-func main() {
-	// Initialize goro!
-	if err := goro.InitTCell(); err != nil {
-		log.Fatal(err)
+// Entity is a type that represents an active entity in the world.
+type Entity struct {
+	x, y  int
+	rune  rune
+	style goro.Style
+}
+
+// NewEntity returns a pointer to a newly created Entity.
+func NewEntity(x int, y int, r rune, s goro.Style) interfaces.Entity {
+	return &Entity{
+		x:     x,
+		y:     y,
+		rune:  r,
+		style: s,
 	}
+}
 
-	goro.Run(func(screen *goro.Screen) {
-		// Screen configuration.
-		screen.SetTitle("My Roguelike")
+// X returns the entity's X position.
+func (e *Entity) X() int {
+	return e.x
+}
 
-		// Our initial variables.
-		player := entity.NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
+// SetX sets the entity's X position.
+func (e *Entity) SetX(x int) {
+	e.x = x
+}
 
-		for {
-			// Draw screen.
-			screen.DrawRune(player.X, player.Y, player.Rune, player.Style)
-			screen.Flush()
-			screen.DrawRune(player.X, player.Y, ' ', goro.Style{})
+// Y returns the entity's Y position.
+func (e *Entity) Y() int {
+	return e.y
+}
 
-			// Handle events.
-			switch event := screen.WaitEvent().(type) {
-			case goro.EventKey:
-				switch action := handleKeyEvent(event).(type) {
-				case ActionMove:
-					player.Move(action.X, action.Y)
-				case ActionQuit:
-					goro.Quit()
-				}
-			case goro.EventQuit:
-				return
-			}
-		}
-	})
+// SetY sets the entity's Y position.
+func (e *Entity) SetX(y int) {
+	e.y = y
+}
+
+// Rune returns the entity's rune.
+func (e *Entity) Rune() rune {
+	return e.rune
+}
+
+// SetRune sets the entity's rune.
+func (e *Entity) SetRune(r rune) {
+	e.rune = r
+}
+
+// Style returns the entity's goro.Style.
+func (e *Entity) Style() goro.Style {
+	return e.style
+}
+
+// SetStyle sets the entity's goro.Style.
+func (e *Entity) SetStyle(s goro.Style) {
+	e.style = s
+}
+
+// Move moves the entity by a given amount.
+func (e *Entity) Move(x, y int) {
+	e.X += x
+	e.Y += y
 }
