@@ -14,8 +14,7 @@ func (g *GameMap) Initialize() {
 		g.Tiles[x] = make([]Tile, g.Height)
 		for y := range g.Tiles[x] {
 			g.Tiles[x][y] = Tile{
-				BlockSight:    true,
-				BlockMovement: true,
+				Flags: BlockSight | BlockMovement,
 			}
 		}
 	}
@@ -27,7 +26,7 @@ func (g *GameMap) IsBlocked(x, y int) bool {
 	if !g.InBounds(x, y) {
 		return true
 	}
-	return g.Tiles[x][y].BlockMovement
+	return g.Tiles[x][y].Flags&BlockMovement != 0
 }
 
 // InBounds returns if the given coordinates are within the map's bounds.

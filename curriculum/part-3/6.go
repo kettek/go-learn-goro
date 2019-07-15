@@ -2,6 +2,8 @@ package mapping
 
 import (
 	"github.com/kettek/goro"
+
+	"myproject/interfaces"
 )
 
 // GameMap is our map data type.
@@ -18,16 +20,15 @@ func (g *GameMap) Initialize() {
 		g.Tiles[x] = make([]Tile, g.Height)
 		for y := range g.Tiles[x] {
 			g.Tiles[x][y] = Tile{
-				BlockSight:    true,
-				BlockMovement: true,
+				Flags: BlockSight | BlockMovement,
 			}
 		}
 	}
 }
 
 // MakeMap creates a new randomized map. This is built according to the passed arguments.
-func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, player *entity.Entity) {
-	var rooms []*Rect
+func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, player interfaces.Entity) {
+	var rooms []Rect
 
 	for r := 0; r < maxRooms; r++ {
 		// Generate a random width and height.
@@ -54,8 +55,8 @@ func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, player *entity
 
 			// Always place the player in the center of the first room.
 			if len(rooms) == 0 {
-				player.X = roomCenterX
-				player.Y = roomCenterY
+				player.SetX(roomCenterX)
+				player.SetY(roomCenterY)
 			} else {
 				prevCenterX, prevCenterY := rooms[len(rooms)-1].Center()
 
@@ -75,7 +76,7 @@ func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, player *entity
 }
 
 // CreateRoom creates a room from a provided rect.
-func (g *GameMap) CreateRoom(r *Rect) {
+func (g *GameMap) CreateRoom(r Rect) {
 	for x := r.X1 + 1; x < r.X2; x++ {
 		for y := r.Y1 + 1; y < r.Y2; y++ {
 			if g.InBounds(x, y) {
@@ -109,7 +110,7 @@ func (g *GameMap) IsBlocked(x, y int) bool {
 	if !g.InBounds(x, y) {
 		return true
 	}
-	return g.Tiles[x][y].BlockMovement
+	return g.Tiles[x][y].Flags&BlockMovement != 0
 }
 
 // InBounds returns if the given coordinates are within the map's bounds.

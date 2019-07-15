@@ -6,8 +6,8 @@ type Rect struct {
 }
 
 // NewRect returns a new Rect type with its properties calculated.
-func NewRect(x int, y int, w int, h int) *Rect {
-	return &Rect{
+func NewRect(x int, y int, w int, h int) Rect {
+	return Rect{
 		X1: x,
 		Y1: y,
 		X2: x + w,
@@ -21,7 +21,7 @@ func (r *Rect) Center() (x, y int) {
 }
 
 // Intersect returns a bool representing if the Rect intersects with another.
-func (r *Rect) Intersect(other *Rect) bool {
+func (r *Rect) Intersect(other Rect) bool {
 	if r.X1 <= other.X2 && r.X2 >= other.X1 && r.Y1 <= other.Y2 && r.Y2 >= other.Y1 {
 		return true
 	}
