@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/kettek/goro/fov"
 	"myproject/mapping"
+
+	"github.com/kettek/goro/fov"
 )
 
 func InitializeFoV(g *mapping.GameMap) fov.Map {
@@ -10,8 +11,8 @@ func InitializeFoV(g *mapping.GameMap) fov.Map {
 
 	for x := range g.Tiles {
 		for y, tile := range g.Tiles[x] {
-			fovMap.SetBlocksMovement(x, y, tile.BlockMovement)
-			fovMap.SetBlocksLight(x, y, tile.BlockSight)
+			fovMap.SetBlocksMovement(x, y, tile.Flags&BlockMovement != 0)
+			fovMap.SetBlocksLight(x, y, tile.Flags&tile.BlockSight != 0)
 		}
 	}
 

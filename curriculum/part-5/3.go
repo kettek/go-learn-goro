@@ -1,8 +1,10 @@
 package mapping
 
 import (
-	"github.com/kettek/goro"
 	"myproject/entity"
+	"myproject/interfaces"
+
+	"github.com/kettek/goro"
 )
 
 // GameMap is our map type for holding our tiles and dimensions.
@@ -19,16 +21,15 @@ func (g *GameMap) Initialize() {
 		g.Tiles[x] = make([]Tile, g.Height)
 		for y := range g.Tiles[x] {
 			g.Tiles[x][y] = Tile{
-				BlockSight:    true,
-				BlockMovement: true,
+				Flags: BlockSight | BlockMovement,
 			}
 		}
 	}
 }
 
 // MakeMap creates a new randomized map. This is built according to the passed arguments.
-func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, entities *[]*entity.Entity, maxMonsters int) {
-	var rooms []*Rect
+func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, entities *[]interfaces.Entity, maxMonsters int) {
+	var rooms []Rect
 
 	for r := 0; r < maxRooms; r++ {
 		// Generate a random width and height.
@@ -55,8 +56,8 @@ func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, entities *[]*e
 
 			// Always place the player in the center of the first room.
 			if len(rooms) == 0 {
-				(*entities)[0].X = roomCenterX
-				(*entities)[0].Y = roomCenterY
+				(*entities)[0].SetX(roomCenterX)
+				(*entities)[0].SetY(roomCenterY)
 			} else {
 				prevCenterX, prevCenterY := rooms[len(rooms)-1].Center()
 
@@ -71,6 +72,7 @@ func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, entities *[]*e
 			}
 			// Place random monsters in the room.
 			g.PlaceEntities(room, entities, maxMonsters)
+
 			// Append our new room to our rooms list.
 			rooms = append(rooms, room)
 		}
@@ -78,7 +80,7 @@ func (g *GameMap) MakeMap(maxRooms, roomMinSize, roomMaxSize int, entities *[]*e
 }
 
 // CreateRoom creates a room from a provided rect.
-func (g *GameMap) CreateRoom(r *Rect) {
+func (g *GameMap) CreateRoom(r Rect) {
 	for x := r.X1 + 1; x < r.X2; x++ {
 		for y := r.Y1 + 1; y < r.Y2; y++ {
 			if g.InBounds(x, y) {
@@ -107,11 +109,11 @@ func (g *GameMap) CreateVTunnel(y1, y2, x int) {
 }
 
 // PlaceEntities places 0 to maxMonsters monster entities in the provided room.
-func (g *GameMap) PlaceEntities(room *Rect, entities *[]*entity.Entity, maxMonsters int) {
+func (g *GameMap) PlaceEntities(room Rect, entities *[]interfaces.Entity, maxMonsters int) {
 	monstersCount := goro.Random.Intn(maxMonsters)
 
 	for i := 0; i < monstersCount; i++ {
-		var monster *entity.Entity
+		var monster interfaces.Entity
 		// Acquire a random location within the room.
 		x := (1 + room.X1) + goro.Random.Intn(room.X2-room.X1-1)
 		y := (1 + room.Y1) + goro.Random.Intn(room.Y2-room.Y1-1)
@@ -131,7 +133,7 @@ func (g *GameMap) PlaceEntities(room *Rect, entities *[]*entity.Entity, maxMonst
 // Explored returns if the tile at x by y has been explored.
 func (g *GameMap) Explored(x, y int) bool {
 	if g.InBounds(x, y) {
-		return g.Tiles[x][y].Explored
+		return g.Tiles[x][y].Flags&Explored != 0
 	}
 	return false
 }
@@ -139,13 +141,17 @@ func (g *GameMap) Explored(x, y int) bool {
 // SetExplored sets the explored state of the tile at x and y to the passed explored bool.
 func (g *GameMap) SetExplored(x, y int, explored bool) {
 	if g.InBounds(x, y) {
-		g.Tiles[x][y].Explored = explored
+    if explored {
+      g.Tiles[x][y].Flags = g.Tiles[x][y].Flags | Explored
+    } else {
+      g.Tiles[x][y].Flags = g.Tiles[x][y].Flags &^ Explored
+    }   
 	}
 }
 
 // IsBlocked returns if the given coordinates are blocking.
 func (g *GameMap) IsBlocked(x, y int) bool {
-	return g.Tiles[x][y].BlockMovement
+	return g.Tiles[x][y].Flags&BlockMovement != 0
 }
 
 // InBounds returns if the given coordinates are within the map's boundaries.

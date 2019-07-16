@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 
+	"myproject/entity"
+	"myproject/interfaces"
+	"myproject/mapping"
+
 	"github.com/kettek/goro"
-	"github.com/kettek/goro-game/entity"
-	"github.com/kettek/goro-game/mapping"
 	"github.com/kettek/goro/fov"
 )
 
@@ -39,7 +41,7 @@ func main() {
 		player := entity.NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
 		npc := entity.NewEntity(screen.Columns/2-5, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorYellow})
 
-		entities := []*entity.Entity{
+		entities := []interfaces.Entity{
 			player,
 			npc,
 		}
@@ -58,7 +60,7 @@ func main() {
 		for {
 
 			if fovRecompute {
-				RecomputeFoV(fovMap, player.X, player.Y, fovRadius, fov.Light{})
+				RecomputeFoV(fovMap, player.X(), player.Y(), fovRadius, fov.Light{})
 			}
 
 			// Draw screen.
@@ -66,14 +68,14 @@ func main() {
 
 			fovRecompute = false
 
-			ClearAll(screen, entities)
+			ClearAll(screen, entities, fovMap)
 
 			// Handle events.
 			switch event := screen.WaitEvent().(type) {
 			case goro.EventKey:
 				switch action := handleKeyEvent(event).(type) {
 				case ActionMove:
-					if !gameMap.IsBlocked(player.X+action.X, player.Y+action.Y) {
+					if !gameMap.IsBlocked(player.X()+action.X, player.Y()+action.Y) {
 						player.Move(action.X, action.Y)
 						fovRecompute = true
 					}

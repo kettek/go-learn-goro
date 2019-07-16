@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"log"
 
+	"myproject/entity"
+	"myproject/interfaces"
+	"myproject/mapping"
+
 	"github.com/kettek/goro"
 	"github.com/kettek/goro/fov"
-	"myproject/entity"
-	"myproject/mapping"
 )
 
 func main() {
 	// Initialize goro!
-	if err := goro.InitEbiten(); err != nil {
-		//if err := goro.InitTCell(); err != nil {
+	if err := goro.InitTCell(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -41,7 +42,7 @@ func main() {
 
 		player := entity.NewEntity(0, 0, '@', goro.Style{Foreground: goro.ColorWhite}, "Player", entity.BlockMovement)
 
-		entities := []*entity.Entity{
+		entities := []interfaces.Entity{
 			player,
 		}
 
@@ -58,7 +59,7 @@ func main() {
 
 		for {
 			if fovRecompute {
-				RecomputeFoV(fovMap, player.X, player.Y, fovRadius, fov.Light{})
+				RecomputeFoV(fovMap, player.X(), player.Y(), fovRadius, fov.Light{})
 			}
 
 			// Draw screen.
@@ -66,7 +67,7 @@ func main() {
 
 			fovRecompute = false
 
-			ClearAll(screen, entities)
+			ClearAll(screen, entities, fovMap)
 
 			// Handle events.
 			switch event := screen.WaitEvent().(type) {
@@ -74,12 +75,12 @@ func main() {
 				switch action := handleKeyEvent(event).(type) {
 				case ActionMove:
 					if gameState == PlayerTurnState {
-						x := player.X + action.X
-						y := player.Y + action.Y
+						x := player.X() + action.X
+						y := player.Y() + action.Y
 						if !gameMap.IsBlocked(x, y) {
 							otherEntity := entity.FindEntityAtLocation(entities, x, y, entity.BlockMovement, entity.BlockMovement)
 							if otherEntity != nil {
-								fmt.Printf("You lick the %s in the shins, much to its enjoyment!\n", otherEntity.Name)
+								fmt.Printf("You lick the %s in the shins, much to its enjoyment!\n", otherEntity.Name())
 							} else {
 								player.Move(action.X, action.Y)
 								fovRecompute = true
@@ -98,7 +99,7 @@ func main() {
 			if gameState == NPCTurnState {
 				for i, e := range entities {
 					if i > 0 {
-						fmt.Printf("The %s punders.\n", e.Name)
+						fmt.Printf("The %s punders.\n", e.Name())
 					}
 				}
 				gameState = PlayerTurnState
