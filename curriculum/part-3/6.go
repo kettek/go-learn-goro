@@ -2,6 +2,8 @@ package mapping
 
 import (
 	"github.com/kettek/goro"
+
+	"myproject/entity"
 )
 
 // GameMap is our map data type.
