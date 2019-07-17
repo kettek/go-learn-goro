@@ -1,67 +1,48 @@
-package main
+package mapping
 
 import (
-	"log"
-
-	"github.com/kettek/goro"
-
-	"myproject/entity"
 	"myproject/interfaces"
-	"myproject/mapping"
 )
 
-func main() {
-	// Initialize goro!
-	if err := goro.InitTCell(); err != nil {
-		log.Fatal(err)
+// GameMap is our map type for holding our tiles and dimensions.
+type GameMap struct {
+	width, height int
+	tiles         [][]Tile
+}
+
+// NewGameMap initializes a GameMap's tiles to match the provided width and height and sets up a few tiles to block movement and sight. Returns a GameMap interface.
+func NewGameMap(width, height int) interfaces.GameMap {
+	g := &GameMap{
+		width:  width,
+		height: height,
 	}
+	g.tiles = make([][]Tile, g.width)
 
-	goro.Run(func(screen *goro.Screen) {
-		// Screen configuration.
-		screen.SetTitle("My Roguelike")
+	for x := range g.tiles {
+		g.tiles[x] = make([]Tile, g.height)
+	}
+	g.tiles[30][22].Flags = BlockMovement | BlockSight
+	g.tiles[31][22].Flags = BlockMovement | BlockSight
+	g.tiles[32][22].Flags = BlockMovement | BlockSight
 
-		// Our initial variables.
-		mapWidth, mapHeight := 80, 24
+	return g
+}
 
-		colors := map[string]goro.Color{
-			"darkWall":   goro.Color{R: 0, G: 0, B: 100, A: 255},
-			"darkGround": goro.Color{R: 50, G: 50, B: 150, A: 255},
-		}
+// Width returns our GameMap's width.
+func (g *GameMap) Width() int {
+  return g.width
+}
 
-		gameMap := mapping.GameMap{
-			Width:  mapWidth,
-			Height: mapHeight,
-		}
+// Height returns our GameMap's height.
+func (g *GameMap) Height() int {
+  return g.height
+}
 
-		gameMap.Initialize()
-
-		player := entity.NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
-		npc := entity.NewEntity(screen.Columns/2-5, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorYellow})
-
-		entities := []interfaces.Entity{
-			player,
-			npc,
-		}
-
-		for {
-			// Draw screen.
-			DrawAll(screen, entities, gameMap, colors)
-			ClearAll(screen, entities)
-
-			// Handle events.
-			switch event := screen.WaitEvent().(type) {
-			case goro.EventKey:
-				switch action := handleKeyEvent(event).(type) {
-				case ActionMove:
-					if !gameMap.IsBlocked(player.X()+action.X, player.Y()+action.Y) {
-						player.Move(action.X, action.Y)
-					}
-				case ActionQuit:
-					goro.Quit()
-				}
-			case goro.EventQuit:
-				return
-			}
-		}
-	})
+// IsBlocked returns if the given coordinates are blocking movement.
+func (g *GameMap) IsBlocked(x, y int) bool {
+	// Always block if outside our GameMap's bounds.
+	if x < 0 || x >= g.width || y < 0 || y >= g.height {
+		return true
+	}
+	return g.tiles[y][x].Flags&BlockMovement != 0
 }

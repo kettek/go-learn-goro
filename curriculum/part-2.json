@@ -10,6 +10,7 @@
     "Implementing Rendering",
     "Multiple Entities and Rendering",
     "Mapping: The Tile",
+    "The GameMap Interface",
     "Mapping: The GameMap",
     "Using our GameMap",
     "Rendering with the GameMap"
