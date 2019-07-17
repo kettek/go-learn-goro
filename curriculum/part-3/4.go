@@ -28,12 +28,7 @@ func main() {
 			"darkGround": goro.Color{R: 50, G: 50, B: 150, A: 255},
 		}
 
-		gameMap := mapping.GameMap{
-			Width:  mapWidth,
-			Height: mapHeight,
-		}
-
-		gameMap.Initialize()
+		gameMap := mapping.NewGameMap(mapWidth, mapHeight)
 
 		gameMap.MakeMap()
 
