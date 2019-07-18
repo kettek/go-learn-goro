@@ -4,6 +4,8 @@ import (
 	"myproject/interfaces"
 
 	"github.com/kettek/goro"
+
+	"myproject/entity"
 )
 
 // GameMap is our map type for holding our tiles and dimensions.
