@@ -5,4 +5,5 @@ type GameMap interface {
   Width() int
   Height() int
   IsBlocked(x, y int) bool
+  IsOpaque(x, y int) bool
 }

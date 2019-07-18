@@ -46,3 +46,11 @@ func (g *GameMap) IsBlocked(x, y int) bool {
 	}
 	return g.tiles[y][x].Flags&BlockMovement != 0
 }
+
+// IsOpaque returns if the given coordinates are blocking sight.
+func (g *GameMap) IsOpaque(x, y int) bool {
+	if x < 0 || x >= g.width || y < 0 || y >= g.height {
+		return true
+	}
+	return g.tiles[y][x].Flags&BlockSight != 0
+}

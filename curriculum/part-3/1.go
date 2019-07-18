@@ -49,7 +49,6 @@ func (g *GameMap) IsBlocked(x, y int) bool {
 
 // IsOpaque returns if the given coordinates are blocking sight.
 func (g *GameMap) IsOpaque(x, y int) bool {
-	// Always block if outside our GameMap's bounds.
 	if !g.InBounds(x, y) {
 		return true
 	}
