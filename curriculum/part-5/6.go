@@ -46,11 +46,8 @@ func main() {
 			player,
 		}
 
-		gameMap := mapping.GameMap{
-			Width:  mapWidth,
-			Height: mapHeight,
-		}
-		gameMap.Initialize()
+		gameMap := mapping.NewGameMap(mapWidth, mapHeight)
+
 		gameMap.MakeMap(maxRooms, roomMinSize, roomMaxSize, &entities, maxMonstersPerRoom)
 
 		fovRecompute := true
