@@ -6,8 +6,19 @@ import (
 	"myproject/interfaces"
 )
 
-// DrawAll draws all entities to the screen and flushes it.
-func DrawAll(screen *goro.Screen, entities []interfaces.Entity) {
+// DrawAll draws all entities and the gameMap to the screen and flushes it.
+func DrawAll(screen *goro.Screen, entities []interfaces.Entity, gameMap interfaces.GameMap, colors map[string]goro.Color) {
+	// Draw all the tiles within the game map.
+	for x := 0; x < gameMap.Width(); x++ {
+		for y := 0; y < gameMap.Height(); y++ {
+			if gameMap.IsBlocked(x, y) {
+				screen.SetBackground(x, y, colors["darkWall"])
+			} else {
+				screen.SetBackground(x, y, colors["darkGround"])
+			}
+		}
+	}
+	// Draw all the entities.
 	for _, entity := range entities {
 		DrawEntity(screen, entity)
 	}

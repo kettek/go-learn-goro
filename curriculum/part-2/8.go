@@ -1,44 +1,48 @@
-package main
+package mapping
 
 import (
-	"github.com/kettek/goro"
-
-	"myproject/entity"
-	"myproject/mapping"
+	"myproject/interfaces"
 )
 
-// DrawAll draws all entities and the gameMap to the screen and flushes it.
-func DrawAll(screen *goro.Screen, entities []*entity.Entity, gameMap mapping.GameMap, colors map[string]goro.Color) {
-	// Draw all the tiles within the game map.
-	for x, column := range gameMap.Tiles {
-		for y, tile := range column {
-			if tile.BlockSight {
-				screen.SetBackground(x, y, colors["darkWall"])
-			} else {
-				screen.SetBackground(x, y, colors["darkGround"])
-			}
-		}
-	}
-	// Draw all the entities.
-	for _, entity := range entities {
-		DrawEntity(screen, entity)
-	}
-	screen.Flush()
+// GameMap is our map type for holding our tiles and dimensions.
+type GameMap struct {
+	width, height int
+	tiles         [][]Tile
 }
 
-// ClearAll clears all entities from the screen.
-func ClearAll(screen *goro.Screen, entities []*entity.Entity) {
-	for _, entity := range entities {
-		ClearEntity(screen, entity)
+// NewGameMap initializes a GameMap's tiles to match the provided width and height and sets up a few tiles to block movement and sight. Returns a GameMap interface.
+func NewGameMap(width, height int) interfaces.GameMap {
+	g := &GameMap{
+		width:  width,
+		height: height,
 	}
+	g.tiles = make([][]Tile, g.width)
+
+	for x := range g.tiles {
+		g.tiles[x] = make([]Tile, g.height)
+	}
+	g.tiles[30][22].Flags = BlockMovement | BlockSight
+	g.tiles[31][22].Flags = BlockMovement | BlockSight
+	g.tiles[32][22].Flags = BlockMovement | BlockSight
+
+	return g
 }
 
-// DrawEntity draws a given entity to the screen.
-func DrawEntity(screen *goro.Screen, e *entity.Entity) {
-	screen.DrawRune(e.X, e.Y, e.Rune, e.Style)
+// Width returns our GameMap's width.
+func (g *GameMap) Width() int {
+  return g.width
 }
 
-// ClearEntity clears a given entity from the screen.
-func ClearEntity(screen *goro.Screen, e *entity.Entity) {
-	screen.DrawRune(e.X, e.Y, ' ', goro.Style{})
+// Height returns our GameMap's height.
+func (g *GameMap) Height() int {
+  return g.height
+}
+
+// IsBlocked returns if the given coordinates are blocking movement.
+func (g *GameMap) IsBlocked(x, y int) bool {
+	// Always block if outside our GameMap's bounds.
+	if x < 0 || x >= g.width || y < 0 || y >= g.height {
+		return true
+	}
+	return g.tiles[y][x].Flags&BlockMovement != 0
 }

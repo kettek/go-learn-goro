@@ -1,10 +1,12 @@
 package main
 
 import (
-	"github.com/kettek/goro"
 	"log"
 
+	"github.com/kettek/goro"
+
 	"myproject/entity"
+	"myproject/interfaces"
 	"myproject/mapping"
 )
 
@@ -26,19 +28,14 @@ func main() {
 			"darkGround": goro.Color{R: 50, G: 50, B: 150, A: 255},
 		}
 
-		gameMap := mapping.GameMap{
-			Width:  mapWidth,
-			Height: mapHeight,
-		}
-
-		gameMap.Initialize()
+		gameMap := mapping.NewGameMap(mapWidth, mapHeight)
 
 		gameMap.MakeMap()
 
 		player := entity.NewEntity(screen.Columns/2, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorWhite})
 		npc := entity.NewEntity(screen.Columns/2-5, screen.Rows/2, '@', goro.Style{Foreground: goro.ColorYellow})
 
-		entities := []*entity.Entity{
+		entities := []interfaces.Entity{
 			player,
 			npc,
 		}
@@ -53,7 +50,7 @@ func main() {
 			case goro.EventKey:
 				switch action := handleKeyEvent(event).(type) {
 				case ActionMove:
-					if !gameMap.IsBlocked(player.X+action.X, player.Y+action.Y) {
+					if !gameMap.IsBlocked(player.X()+action.X, player.Y()+action.Y) {
 						player.Move(action.X, action.Y)
 					}
 				case ActionQuit:
