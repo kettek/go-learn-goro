@@ -1,0 +1,18 @@
+{
+  "Name": "Part 5: Placing Enemies and Interacting with Them",
+  "Description": "This part of the tutorial covers generating enemies and very minorly interacting with them.",
+  "Language": "go",
+  "LanguageExtension": "go",
+  "Lessons": [
+    "Implementing the Actor Interface",
+    "Creating the Monster Actor",
+    "Updating the Entity Interface",
+    "Updating the Entity struct",
+    "Making the Monsters Move",
+    "Enhancing our Movement",
+    "Implementing the Fighter Interface",
+    "Creating the Basic Fighter",
+    "Updating our Entity creation functions",
+    "Doing and Taking Damage"
+  ]
+}
