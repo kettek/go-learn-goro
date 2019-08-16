@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"math"
 	"myproject/interfaces"
 
 	"github.com/kettek/goro"
@@ -8,11 +9,13 @@ import (
 
 // Entity is a type that represents an active entity, such as a player or monster, in the game map.
 type Entity struct {
-	x, y  int
-	rune  rune
-	style goro.Style
-	name  string
-	flags uint
+	x, y    int
+	rune    rune
+	style   goro.Style
+	name    string
+	flags   uint
+	fighter interfaces.Fighter
+	actor   interfaces.Actor
 }
 
 // NewEntity returns an interface to a new populated Entity.
@@ -31,6 +34,14 @@ func NewEntity(x int, y int, r rune, style goro.Style, name string, flags uint) 
 func (e *Entity) Move(x, y int) {
 	e.x += x
 	e.y += y
+}
+
+// DistanceTo gets the distance between two entities.
+func (e *Entity) DistanceTo(other interfaces.Entity) float64 {
+	destX := float64(e.x - other.X())
+	destY := float64(e.y - other.Y())
+
+	return math.Sqrt(math.Pow(destX, 2) + math.Pow(destY, 2))
 }
 
 // X returns the entity's x.
@@ -91,6 +102,28 @@ func (e *Entity) Flags() uint {
 // SetFlags sets the entity's flags.
 func (e *Entity) SetFlags(f uint) {
 	e.flags = f
+}
+
+// Actor gets the Actor interface owned by the entity.
+func (e *Entity) Actor() interfaces.Actor {
+	return e.actor
+}
+
+// SetActor sets the entity's Actor to the passed one.
+func (e *Entity) SetActor(a interfaces.Actor) {
+	e.actor = a
+	e.actor.SetOwner(e)
+}
+
+// Fighter gets the Fighter interface owned by the entity.
+func (e *Entity) Fighter() interfaces.Fighter {
+	return e.fighter
+}
+
+// SetFighter sets the entity's Fighter to the passed one.
+func (e *Entity) SetFighter(f interfaces.Fighter) {
+	e.fighter = f
+	e.fighter.SetOwner(e)
 }
 
 // FindEntityAtLocation finds and returns the first entity at x and y matching the provided flags. If none exists, it returns nil.

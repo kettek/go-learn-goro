@@ -40,7 +40,7 @@ func main() {
 			"lightGround": goro.Color{R: 150, G: 150, B: 150, A: 255},
 		}
 
-		player := entity.NewEntity(0, 0, '@', goro.Style{Foreground: goro.ColorWhite}, "Player", entity.BlockMovement)
+		player := entity.NewPlayerEntity()
 
 		entities := []interfaces.Entity{
 			player,
@@ -94,9 +94,9 @@ func main() {
 
 			// Handle entity updates.
 			if gameState == NPCTurnState {
-				for i, e := range entities {
-					if i > 0 {
-						fmt.Printf("The %s punders.\n", e.Name())
+				for _, e := range entities {
+					if e.Actor() != nil {
+						e.Actor().TakeTurn(fovMap, gameMap, entities)
 					}
 				}
 				gameState = PlayerTurnState

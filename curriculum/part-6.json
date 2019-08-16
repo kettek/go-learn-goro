@@ -1,18 +1,16 @@
 {
-  "Name": "Part 5: Placing Enemies and Interacting with Them",
-  "Description": "This part of the tutorial covers generating enemies and very minorly interacting with them.",
+  "Name": "Part 6: Actors and Pathfinding",
+  "Description": "This part of the tutorial covers the Actor interface and monster pathfinding.",
   "Language": "go",
   "LanguageExtension": "go",
   "Lessons": [
-    "Implementing the Actor Interface",
-    "Creating the Monster Actor",
     "Updating the Entity Interface",
     "Updating the Entity struct",
-    "Making the Monsters Move",
-    "Enhancing our Movement",
-    "Implementing the Fighter Interface",
-    "Creating the Basic Fighter",
-    "Updating our Entity creation functions",
-    "Doing and Taking Damage"
+    "Creating the Actor Interface",
+    "Creating the Fighter Interface",
+    "Creating the Monster Actor",
+    "Entity Factories",
+    "Updating GameMap",
+    "Updating Main!"
   ]
 }
