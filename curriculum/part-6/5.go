@@ -39,9 +39,9 @@ func (a *MonsterActor) SetTarget(e interfaces.Entity) {
 // TakeTurn is the actor's turn-based logic step.
 func (a *MonsterActor) TakeTurn(fovMap fov.Map, gameMap interfaces.GameMap, entities []interfaces.Entity) {
 	if fovMap.Visible(a.owner.X(), a.owner.Y()) {
-		if a.owner.DistanceTo(entities[0]) >= 3 {
-			a.PathfindTo(entities[0], gameMap, entities)
-		} else if a.target != nil && a.target.Fighter() != nil && a.target.Fighter().Hp() > 0 {
+		if a.target != nil && a.owner.DistanceTo(a.target) >= 3 {
+			a.PathfindTo(a.target, gameMap, entities)
+		} else if a.target != nil {
 			fmt.Printf("The %s eyeballs you ferociously.\n", a.owner.Name())
 		}
 	}
